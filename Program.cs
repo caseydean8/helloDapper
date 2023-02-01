@@ -7,6 +7,7 @@ using Dapper;
 using ModelsTutorial.Models;
 // Import data folder
 using ModelsTutorial.Data;
+using Microsoft.Extensions.Configuration;
 
 namespace ModelsTutorial
 {
@@ -14,8 +15,12 @@ namespace ModelsTutorial
     {
         public static void Main(string[] args)
         {
-            DataContextDapper dapper = new DataContextDapper();
-            DataContextEF entityFramework = new DataContextEF();
+            IConfiguration config = new ConfigurationBuilder()
+              .AddJsonFile("appsettings.json")
+              .Build();
+
+            DataContextDapper dapper = new DataContextDapper(config);
+            DataContextEF entityFramework = new DataContextEF(config);
 
             DateTime rightNow = dapper.LoadDataSingle<DateTime>("SELECT GETDATE()");
 
